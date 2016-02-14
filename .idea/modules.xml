@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TarsysAndroidSupport.iml" filepath="$PROJECT_DIR$/TarsysAndroidSupport.iml" />
-      <module fileurl="file://$PROJECT_DIR$/support/androidsupport.iml" filepath="$PROJECT_DIR$/support/androidsupport.iml" />
+      <module fileurl="file://$PROJECT_DIR$/support/support.iml" filepath="$PROJECT_DIR$/support/support.iml" />
     </modules>
   </component>
 </project>
