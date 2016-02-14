@@ -1,0 +1,6 @@
+<resources>
+    <string name="error_unsupported_account_type">Unsupported Account Type</string>
+    <string name="error_unsupported_auth_token_type">Unsupported Auth Token Type</string>
+    <string name="error_unsupported_features">Unsupported features</string>
+    <string name="error_only_one_account_allowed">Only one account is allowed</string>
+</resources>

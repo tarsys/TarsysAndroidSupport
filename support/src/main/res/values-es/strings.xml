@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_unsupported_account_type">Tipo de cuenta no soportado</string>
+    <string name="error_unsupported_auth_token_type">Token de autenticación no soportado</string>
+    <string name="error_unsupported_features">Características no soportadas</string>
+    <string name="error_only_one_account_allowed">Sólo se permite una cuenta de este tipo</string>
+</resources>
