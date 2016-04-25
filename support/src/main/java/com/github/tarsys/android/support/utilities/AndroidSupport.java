@@ -120,6 +120,8 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by tarsys on 21/9/15.
  */
 public class AndroidSupport {
+    public static String EmptyString = "";
+
     /**
      * Displays a notification in the notification area of the device
      * @param context App Context
@@ -133,7 +135,7 @@ public class AndroidSupport {
      * @param vibrateOnNotify true if notification launch vibration, false otherwise
      * @param onClickActivity Intent to execute when we click the notification
      */
-    public static void ShowNotification(Context context, int id, int notificationIcon, String barTitle, String title, String text, long notificationTime, boolean audibleNotification, boolean vibrateOnNotify, Intent onClickActivity)
+    public static void showNotification(Context context, int id, int notificationIcon, String barTitle, String title, String text, long notificationTime, boolean audibleNotification, boolean vibrateOnNotify, Intent onClickActivity)
     {
         try
         {
@@ -169,7 +171,7 @@ public class AndroidSupport {
     }
 
 
-    public static byte[] InputStream2ByteArray (InputStream is){
+    public static byte[] inputStream2ByteArray (InputStream is){
         byte[] retorno = null;
 
         try{
@@ -202,7 +204,7 @@ public class AndroidSupport {
      * @param fontItalic
      * @param fontBoldItalic
      */
-    public static void SetTypeFaceContainer (View v, Typeface fontRegular, Typeface fontBold, Typeface fontItalic, Typeface fontBoldItalic)
+    public static void setTypeFaceContainer (View v, Typeface fontRegular, Typeface fontBold, Typeface fontItalic, Typeface fontBoldItalic)
     {
         List<Class> clases = Arrays.asList(new Class[]{TextView.class, EditText.class, Button.class, CheckBox.class, RadioButton.class});
 
@@ -212,18 +214,18 @@ public class AndroidSupport {
 
         for (int i = 0; i < nHijos; i++)
         {
-            final View hijo = v instanceof ViewGroup ? ((ViewGroup) v).getChildAt(i) : v;
-            if (hijo instanceof ViewGroup)
+            final View children = v instanceof ViewGroup ? ((ViewGroup) v).getChildAt(i) : v;
+            if (children instanceof ViewGroup)
             {
-                AndroidSupport.SetTypeFaceContainer((ViewGroup) hijo, fontRegular, fontBold, fontItalic, fontBoldItalic);
+                AndroidSupport.setTypeFaceContainer((ViewGroup) children, fontRegular, fontBold, fontItalic, fontBoldItalic);
             }
-            else if (clases.contains(hijo.getClass()))
+            else if (clases.contains(children.getClass()))
             {
                 Method mGetTypeface = null;
 
                 try
                 {
-                    mGetTypeface = hijo.getClass().getMethod("getTypeface");
+                    mGetTypeface = children.getClass().getMethod("getTypeface");
                 }
                 catch (Exception e)
                 { /* Do something... */ }
@@ -232,21 +234,21 @@ public class AndroidSupport {
                 {
                     if (mGetTypeface != null)
                     {
-                        Typeface fOrig = (Typeface) mGetTypeface.invoke(hijo);
+                        Typeface fOrig = (Typeface) mGetTypeface.invoke(children);
 
                         Typeface font = fOrig == null ? fontRegular : fOrig.isBold() && fOrig.isItalic() ? fontBoldItalic : fOrig.isBold() ? fontBold : fOrig.isItalic() ? fontItalic : fontRegular;
 
                         Method mSetTypeface = null;
-                        if (hijo.getClass() == TextView.class){
-                            ((TextView) hijo).setTypeface(font);
-                        }else if (hijo.getClass() == EditText.class){
-                            ((EditText) hijo).setTypeface(font);
-                        }else if (hijo.getClass() == Button.class){
-                            ((Button) hijo).setTypeface(font);
-                        }else if (hijo.getClass() == CheckBox.class){
-                            ((CheckBox) hijo).setTypeface(font);
-                        }else if (hijo.getClass() == RadioButton.class){
-                            ((RadioButton) hijo).setTypeface(font);
+                        if (children.getClass() == TextView.class){
+                            ((TextView) children).setTypeface(font);
+                        }else if (children.getClass() == EditText.class){
+                            ((EditText) children).setTypeface(font);
+                        }else if (children.getClass() == Button.class){
+                            ((Button) children).setTypeface(font);
+                        }else if (children.getClass() == CheckBox.class){
+                            ((CheckBox) children).setTypeface(font);
+                        }else if (children.getClass() == RadioButton.class){
+                            ((RadioButton) children).setTypeface(font);
                         }
                     }
                 }
@@ -261,14 +263,14 @@ public class AndroidSupport {
      * @param context App Context
      * @param title Window share selection title
      * @param contacts Contact list
-     * @param extStreams Stream hashmap with streams to share <identifier, stream to share>
+     * @param extStreams Stream hashmap with streams to share &lt;identifier, stream to share&gt;
      */
-    public static void ShareOutputStreams(Context context, String title, ArrayList<TelephoneContact> contacts, java.util.HashMap<String, ArrayList<ByteArrayOutputStream>> extStreams){
+    public static void shareOutputStreams(Context context, String title, ArrayList<TelephoneContact> contacts, java.util.HashMap<String, ArrayList<ByteArrayOutputStream>> extStreams){
         final ArrayList<File> ficheros = new ArrayList<File>();
 
         String []emailsCCO = new String[contacts.size()];
         for(int i = 0; i < contacts.size(); i++) emailsCCO[i] = contacts.get(i).geteMail();
-        String Urls = "";
+        String Urls = AndroidSupport.EmptyString;
         for (String kExt : extStreams.keySet()){
             ArrayList<ByteArrayOutputStream> streams = extStreams.get(kExt);
             if (kExt.equals(".uri")){
@@ -329,7 +331,7 @@ public class AndroidSupport {
      * @param accountType Account Type
      * @return Account List of provided type.
      */
-    public static ArrayList<Account> LoadUserAccounts(Context context, String accountType){
+    public static ArrayList<Account> loadUserAccounts(Context context, String accountType){
         ArrayList<Account> retorno = new ArrayList<Account>();
         AccountManager gestionCuenta = AccountManager.get(context);
         Account []ctas = null;
@@ -361,7 +363,7 @@ public class AndroidSupport {
      */
     public static Account getUserAccount(Context context, String accountType, String accountName){
         Account retorno = null;
-        ArrayList<Account> cuentas = AndroidSupport.LoadUserAccounts(context, accountType);
+        ArrayList<Account> cuentas = AndroidSupport.loadUserAccounts(context, accountType);
         for(Account cta : cuentas) {
             if (cta.name.equalsIgnoreCase(accountName)){
                 retorno = cta;
@@ -379,7 +381,7 @@ public class AndroidSupport {
      * @param iUser
      * @return true if the account has been created / updated succesfully, false otherwise
      */
-    public static boolean SaveUserAccount(Context context, String accountType, IUser iUser){
+    public static boolean saveUserAccount(Context context, String accountType, IUser iUser){
         boolean retorno = false;
 
         if (iUser != null){
@@ -410,14 +412,14 @@ public class AndroidSupport {
      * Gets an object date we interpret as null date (01/01/1900)
      * @return
      */
-    public static Date NullDate(){
+    public static Date nullDate(){
         Calendar cal = Calendar.getInstance();
         cal.set(1900, Calendar.JANUARY, 1);
 
         return cal.getTime();
     }
 
-    public static String ValidSpanishIdentityDocument(String DNI){
+    public static String isValidSpanishIdentityDocument(String DNI){
 
         String juegoCaracteres="TRWAGMYFPDXBNJZSQVHLCKET";
         String retorno = DNI;
@@ -448,7 +450,7 @@ public class AndroidSupport {
             }
         }else if (letrasCIF.contains(primerCaracter)){ // Es un CIF
             String nroCIF = DNI.substring(1);
-            retorno = "";
+            retorno = AndroidSupport.EmptyString;
             if (nroCIF.length() >= 7){
                 nroCIF = nroCIF.substring(0,7);
                 // Ahora, comenzamos el cálculo del dígito de control del CIF...
@@ -581,9 +583,9 @@ public class AndroidSupport {
                     Cursor curContacto = cResolver.query(ContactsContract.Contacts.CONTENT_URI,
                             null,
                             String.format("%s = ? %s %s %s", ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
-                                    onlyVisibleContacts? "and" : "",
-                                    onlyVisibleContacts? ContactsContract.Contacts.IN_VISIBLE_GROUP : "",
-                                    onlyVisibleContacts? " = ? " : ""),
+                                    onlyVisibleContacts? "and" : AndroidSupport.EmptyString,
+                                    onlyVisibleContacts? ContactsContract.Contacts.IN_VISIBLE_GROUP : AndroidSupport.EmptyString,
+                                    onlyVisibleContacts? " = ? " : AndroidSupport.EmptyString),
                             onlyVisibleContacts? new String []{ String.valueOf(idContacto), "1" } :
                                     new String []{ String.valueOf(idContacto) },
                             null);
@@ -603,7 +605,7 @@ public class AndroidSupport {
                                 foto = photo;
                             }
                         }
-                        String eMail = "";
+                        String eMail = AndroidSupport.EmptyString;
 
                         Cursor curEmail = cResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,null,
                                 ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
@@ -618,7 +620,7 @@ public class AndroidSupport {
                                 telefono,
                                 curContacto.getString(curContacto.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)),
                                 eMail);
-                        if ((contactsWithEmail && !eMail.trim().equals("")) || !contactsWithEmail){
+                        if ((contactsWithEmail && !eMail.trim().equals(AndroidSupport.EmptyString)) || !contactsWithEmail){
                             retorno.add(contacto);
                         }
                     }
@@ -639,7 +641,7 @@ public class AndroidSupport {
             while (curContacto.moveToNext()){
                 int idFoto = curContacto.getInt(curContacto.getColumnIndex(ContactsContract.Contacts.PHOTO_ID));
                 int idContacto = curContacto.getInt(curContacto.getColumnIndex(ContactsContract.Contacts._ID));
-                String telefono = "";
+                String telefono = AndroidSupport.EmptyString;
                 Cursor curTlf = cResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                         null,
                         ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
@@ -663,7 +665,7 @@ public class AndroidSupport {
                         foto = photo;
                     }
                 }
-                String eMail = "";
+                String eMail = AndroidSupport.EmptyString;
 
                 Cursor curEmail = cResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,null,
                         ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String []{String.valueOf(idContacto)},null);
@@ -675,7 +677,7 @@ public class AndroidSupport {
                         telefono,
                         curContacto.getString(curContacto.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)),
                         eMail);
-                if ((contactsWithEmail && !eMail.trim().equals("")) || !contactsWithEmail){
+                if ((contactsWithEmail && !eMail.trim().equals(AndroidSupport.EmptyString)) || !contactsWithEmail){
                     retorno.add(contacto);
                 }
             }
@@ -736,7 +738,7 @@ public class AndroidSupport {
                                 foto = photo;
                             }
                         }
-                        String eMail = "";
+                        String eMail = AndroidSupport.EmptyString;
 
                         Cursor curEmail = cResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,null,
                                 ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String []{String.valueOf(idContacto)},null);
@@ -762,7 +764,7 @@ public class AndroidSupport {
         }
         if (retorno == null){
             Bitmap foto = ((BitmapDrawable)context.getResources().getDrawable(resDefaultPhoto)).getBitmap();
-            retorno = new TelephoneContact(foto, telephoneNumber,telephoneNumber,"");
+            retorno = new TelephoneContact(foto, telephoneNumber,telephoneNumber,AndroidSupport.EmptyString);
         }
         return retorno;
     }
@@ -809,11 +811,11 @@ public class AndroidSupport {
                     returnValue.setRequestProperty(key, headers.get(key));
             }
 
-            String requestData = "";
+            String requestData = AndroidSupport.EmptyString;
 
             if (postValues != null){
                 for(String key : postValues.keySet()){
-                    requestData += (requestData.isEmpty() ? "" : "&") + URLEncoder.encode(key, "UTF-8") + "=" + URLEncoder.encode(postValues.get(key), "UTF-8");
+                    requestData += (requestData.isEmpty() ? AndroidSupport.EmptyString : "&") + URLEncoder.encode(key, "UTF-8") + "=" + URLEncoder.encode(postValues.get(key), "UTF-8");
                 }
             }
 
@@ -951,7 +953,7 @@ public class AndroidSupport {
         return retorno;
     }
 
-    public static String Md5(String s) {
+    public static String md5(String s) {
         try {
             // Create MD5 Hash
             MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
@@ -965,10 +967,10 @@ public class AndroidSupport {
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
         }
-        return "";
+        return AndroidSupport.EmptyString;
     }
 
-    public static boolean InputStream2OutputStream (InputStream inStr, String fichero){
+    public static boolean inputStream2OutputStream (InputStream inStr, String fichero){
         FileOutputStream outFichero;
 
         try{
@@ -1000,7 +1002,7 @@ public class AndroidSupport {
         return sb.toString();
     }
 
-    public static String Stream2StringSinCR(InputStream is) throws Exception {
+    public static String Stream2StringWithoutCR(InputStream is) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
         String line;
@@ -1029,7 +1031,7 @@ public class AndroidSupport {
         return retorno;
     }
 
-    public static boolean UnzipStream (InputStream zipStream, String directorioDestino){
+    public static boolean unzipStream (InputStream zipStream, String directorioDestino){
         boolean retorno;
         try{
             ZipInputStream zin = new ZipInputStream(zipStream);
@@ -1069,7 +1071,7 @@ public class AndroidSupport {
     public static Date parseRFC3339Date(String datestring) {
         Date d = new Date();
 
-        if (!datestring.equals("")){
+        if (!datestring.equals(AndroidSupport.EmptyString)){
             // if there is no time zone, we don't need to do any special parsing.
             if (datestring.endsWith("Z")) {
                 try {
@@ -1205,8 +1207,7 @@ public class AndroidSupport {
         return retorno;
     }
 
-
-    public static int [] AddressGpsCoordinates(String address, String state, String country){
+    public static int [] addressGpsCoordinates(String address, String state, String country){
         int [] retorno = new int []{0,0};
 
         String urlJSON = String.format("http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=true", URLEncoder.encode(address + "," + state + "," + country));

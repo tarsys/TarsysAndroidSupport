@@ -112,7 +112,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
 
     //region Métodos privados
 
-    private void ValidateAccountType(String pAccountType) throws UnSupportedAccountTypeException
+    private void validateAccountType(String pAccountType) throws UnSupportedAccountTypeException
     {
         if (!pAccountType.equals(this.context.getResources().getString(this.resourceAccountType)))
         {
@@ -120,11 +120,11 @@ public class Authenticator extends AbstractAccountAuthenticator {
         }
     }
 
-    private void ValidateAuthTokenType(String pAuthTokenType) throws UnsupportedAuthTokenTypeException
+    private void validateAuthTokenType(String pAuthTokenType) throws UnsupportedAuthTokenTypeException
     {
     }
 
-    private void ValidateRequiredFeatures(String[] pRequiredFeatures) throws UnsupportedFeaturesException
+    private void validateRequiredFeatures(String[] pRequiredFeatures) throws UnsupportedFeaturesException
     {
     }
 
@@ -142,16 +142,16 @@ public class Authenticator extends AbstractAccountAuthenticator {
     public Bundle addAccount(AccountAuthenticatorResponse pResponse, String pAccountType, String pAuthTokenType, String[] pRequiredFeatures, Bundle pLoginOptions) throws NetworkErrorException
     {
 
-        if (this.onlyOneAccount && !AndroidSupport.LoadUserAccounts(this.context, pAccountType).isEmpty()) {
+        if (this.onlyOneAccount && !AndroidSupport.loadUserAccounts(this.context, pAccountType).isEmpty()) {
             Toast.makeText(this.context, R.string.error_only_one_account_allowed, Toast.LENGTH_LONG).show();
             return null;
         }
         /* Validate the input. */
         try
         {
-            ValidateAccountType(pAccountType);
-            ValidateAuthTokenType(pAuthTokenType);
-            ValidateRequiredFeatures(pRequiredFeatures);
+            validateAccountType(pAccountType);
+            validateAuthTokenType(pAuthTokenType);
+            validateRequiredFeatures(pRequiredFeatures);
         }
         catch (AuthenticatorException lException)
         {
@@ -200,7 +200,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
     {
         try
         {
-            ValidateAuthTokenType(authTokenType);
+            validateAuthTokenType(authTokenType);
         }
         catch (AuthenticatorException lException)
         {
@@ -256,12 +256,12 @@ public class Authenticator extends AbstractAccountAuthenticator {
      * @param iUser
      * @return true if the account is succesfully created or updated, false otherwise
      */
-    public <T> boolean CreateOrUpdateAndroidAccount(IUser iUser, Class<T> userClass){
+    public <T> boolean createOrUpdateAndroidAccount(IUser iUser, Class<T> userClass){
         boolean returnValue = false;
         try {
             AccountManager accountManager = AccountManager.get(this.context);
 
-            ArrayList<Account> accounts = AndroidSupport.LoadUserAccounts(this.context, this.context.getString(this.resourceAccountType));
+            ArrayList<Account> accounts = AndroidSupport.loadUserAccounts(this.context, this.context.getString(this.resourceAccountType));
             Account accountUser = null;
 
             if (accounts != null && accounts.size() > 0) {
