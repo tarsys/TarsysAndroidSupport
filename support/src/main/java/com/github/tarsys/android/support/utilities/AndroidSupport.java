@@ -991,6 +991,30 @@ public class AndroidSupport {
         return outFichero != null;
     }
 
+    public static long toLong(Object value){
+        long returnValue;
+
+        try{
+            returnValue = value instanceof Long ? ((Long) value).longValue() : Long.parseLong(value.toString());
+        }catch (Exception ex){
+            returnValue = 0;
+        }
+
+        return returnValue;
+    }
+
+    public static double toDouble(Object value){
+        double returnValue;
+
+        try{
+            returnValue = value instanceof Double ? ((Double) value).doubleValue() : Double.parseDouble(value.toString());
+        }catch (Exception ex){
+            returnValue = 0;
+        }
+
+        return returnValue;
+    }
+
     public static String Stream2String(InputStream is) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();

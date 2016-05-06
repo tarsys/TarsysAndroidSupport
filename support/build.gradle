@@ -4,8 +4,8 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven'
 apply plugin: 'me.tatarka.retrolambda'
 
-def libraryVersionId = 1027
-def libraryVersionCode='1.0.2.7'
+def libraryVersionId = 1029
+def libraryVersionCode='1.0.2.9'
 
 ext {
     bintrayRepo = 'maven'
