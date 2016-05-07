@@ -1,20 +1,30 @@
 package com.github.tarsys.android.support.reflection;
 
+import android.content.Context;
+
 import com.annimon.stream.Stream;
+import com.github.tarsys.android.support.utilities.AndroidSupport;
+import com.google.gson.GsonBuilder;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import dalvik.system.PathClassLoader;
+
 /**
  * Created by tarsys on 23/4/16.
  */
 public class SerializableMethod implements Serializable {
+    private transient PathClassLoader classLoader;
+    private transient Context context;
     private String returnType;
     private String className;
     private String methodName;
 
-    public SerializableMethod(Method method){
+    public SerializableMethod(Context context, Method method){
+        this.context = context;
+        this.classLoader = Reflection.getClassLoader(context);
         this.returnType = method.getReturnType().getCanonicalName();
         this.className = method.getDeclaringClass().getCanonicalName();
         this.methodName = method.getName();
@@ -24,7 +34,7 @@ public class SerializableMethod implements Serializable {
         Method returnValue = null;
 
         try {
-            Class<?> classMethod = ClassLoader.getSystemClassLoader().loadClass(this.className);
+            Class<?> classMethod = this.classLoader.loadClass(this.className);
             returnValue = classMethod.getMethod(this.methodName);
 
         } catch (ClassNotFoundException e) {
@@ -62,9 +72,14 @@ public class SerializableMethod implements Serializable {
 
     @Override
     public String toString(){
-        Method method = this.getMethod();
+        String returnValue;
 
+        try {
+            returnValue = new GsonBuilder().create().toJson(this);
+        }catch (Exception ex){
+            returnValue = AndroidSupport.EmptyString;
+        }
 
-        return method != null ? method.toString() : "";
+        return returnValue;
     }
 }
