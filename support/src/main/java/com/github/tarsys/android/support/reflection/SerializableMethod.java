@@ -46,6 +46,15 @@ public class SerializableMethod implements Serializable {
         return returnValue;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+        this.classLoader = Reflection.getClassLoader(context);
+    }
+
     public String getClassName() {
         return className;
     }
