@@ -4,8 +4,8 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven'
 apply plugin: 'me.tatarka.retrolambda'
 
-def libraryVersionId = 1034
-def libraryVersionCode='1.0.3.4'
+def libraryVersionId = 1037
+def libraryVersionCode='1.0.3.7'
 
 ext {
     bintrayRepo = 'maven'
@@ -28,14 +28,14 @@ ext {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
 
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode libraryVersionId
         versionName libraryVersionCode
     }
@@ -59,8 +59,8 @@ uploadArchives {
     repositories {
         mavenDeployer {
             repository(url: "file:///Users/tarsys/Desarrollo/MavenRepo/aars")
-            pom.groupId = 'com.github.tarsys.android'
-            pom.artifactId = 'support'
+            pom.groupId = publishedGroupId
+            pom.artifactId = artifact
             pom.version = libraryVersionCode
         }
     }
@@ -68,11 +68,10 @@ uploadArchives {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:1.+'
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:1.8.1'
     compile 'com.annimon:stream:1.0.1'
-    compile 'com.google.code.gson:gson:2.6.1'
-    compile 'com.google.guava:guava:19.0'
-    compile 'org.springframework:spring:2.5.6.SEC03'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.guava:guava:20.0'
 }
 
 group = 'com.github.tarsys.android'

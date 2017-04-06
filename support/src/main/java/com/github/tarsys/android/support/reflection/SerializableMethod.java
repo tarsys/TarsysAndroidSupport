@@ -16,25 +16,22 @@ import dalvik.system.PathClassLoader;
  * Created by tarsys on 23/4/16.
  */
 public class SerializableMethod implements Serializable {
-    private transient PathClassLoader classLoader;
-    private transient Context context;
     private String returnType;
     private String className;
     private String methodName;
 
-    public SerializableMethod(Context context, Method method){
-        this.context = context;
-        this.classLoader = Reflection.getClassLoader(context);
+    public SerializableMethod(Method method){
         this.returnType = method.getReturnType().getCanonicalName();
         this.className = method.getDeclaringClass().getCanonicalName();
         this.methodName = method.getName();
     }
 
-    public Method getMethod(){
+    public Method getMethod(Context context){
         Method returnValue = null;
 
         try {
-            Class<?> classMethod = this.classLoader.loadClass(this.className);
+            PathClassLoader classLoader = Reflection.getClassLoader(context);
+            Class<?> classMethod = classLoader.loadClass(this.className);
             returnValue = classMethod.getMethod(this.methodName);
 
         } catch (ClassNotFoundException e) {
@@ -44,15 +41,6 @@ public class SerializableMethod implements Serializable {
         }
 
         return returnValue;
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-        this.classLoader = Reflection.getClassLoader(context);
     }
 
     public String getClassName() {

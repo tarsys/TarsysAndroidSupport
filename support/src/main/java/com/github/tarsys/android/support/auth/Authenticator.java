@@ -270,7 +270,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
 
                 for (Account account : accounts) {
                     IUser user = (IUser) IUser.fromAccount(context, userClass, account);
-                    if (user != null && user.getLogin().equals(user.getLogin())) {
+                    if (user != null && user.getLogin().equals(iUser.getLogin())) {
                         // the login are the same... catched!
                         accountUser = account;
                         break;
