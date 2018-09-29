@@ -2,10 +2,10 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven'
-apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'me.tatarka.retrolambda'
 
-def libraryVersionId = 1037
-def libraryVersionCode='1.0.3.7'
+def libraryVersionId = 1038
+def libraryVersionCode='1.0.3.8'
 
 ext {
     bintrayRepo = 'maven'
@@ -28,14 +28,14 @@ ext {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
 
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 28
         versionCode libraryVersionId
         versionName libraryVersionCode
     }
@@ -67,11 +67,11 @@ uploadArchives {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:1.8.1'
-    compile 'com.annimon:stream:1.0.1'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.google.guava:guava:20.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:1.8.1'
+    implementation 'com.annimon:stream:1.0.1'
+    implementation 'com.google.code.gson:gson:2.7'
+    implementation 'com.google.guava:guava:20.0'
 }
 
 group = 'com.github.tarsys.android'
