@@ -4,8 +4,8 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven'
 //apply plugin: 'me.tatarka.retrolambda'
 
-def libraryVersionId = 1038
-def libraryVersionCode='1.0.3.8'
+def libraryVersionId = 1039
+def libraryVersionCode='1.0.3.9'
 
 ext {
     bintrayRepo = 'maven'
@@ -70,8 +70,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:1.8.1'
     implementation 'com.annimon:stream:1.0.1'
-    implementation 'com.google.code.gson:gson:2.7'
-    implementation 'com.google.guava:guava:20.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.guava:guava:24.1-jre'
 }
 
 group = 'com.github.tarsys.android'
